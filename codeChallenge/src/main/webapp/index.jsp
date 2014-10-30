@@ -6,21 +6,27 @@
 <html>
 <head>
 <link href="<c:url value="/resources/css/jquery.dataTables.css" />" rel="stylesheet">
-<script src="<c:url value="/resources/js/jquery.min.js" />"></script>
+<link href="<c:url value="/resources/css/jquery.dataTables_themeroller.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
+<link href="<c:url value="/resources/css/bootstrap-theme.min.css" />" rel="stylesheet">
+<script src="<c:url value="/resources/js/jquery.js" />"></script>
 <script src="<c:url value="/resources/js/jquery.dataTables.min.js" />"></script>
+<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>School Results</title>
 <script>
 $(document).ready(function() {
-	var datatable = $('#table').dataTable({
+
+	var dataTable = $('#table').dataTable({
 		"asSorting": [[ 1, "desc" ]],
 		"bProcessing": false,
 		"sPaginationType": "full_numbers",
 		"iDisplayLength": 50,
 		"aaSorting": [[ 1, "desc" ]],
 		"bJQueryUI": true,
-		"sAjaxSource": "/codeChallenge/list",
+		"sAjaxSource": "/codeChallenge/list?subject=all",
 		"sAjaxDataProp": "schools",
+		"bDestroy": true,
 		"aoColumns": [
 			{ "mData": "school.schoolName" },
 			{ "mData": "latestY3" },
@@ -33,11 +39,53 @@ $(document).ready(function() {
 			{ "mData": "latestGainInGainY3Y5" }
 		],
 	} );
+
+	$('#subject').on('change', function() {
+		dataTable.fnClearTable();
+		dataTable = $('#table').dataTable({
+			"asSorting": [[ 1, "desc" ]],
+			"bProcessing": false,
+			"sPaginationType": "full_numbers",
+			"iDisplayLength": 50,
+			"aaSorting": [[ 1, "desc" ]],
+			"bJQueryUI": true,
+			"sAjaxSource": "/codeChallenge/list?subject="+$('#subject').val(),
+			"sAjaxDataProp": "schools",
+			"bDestroy": true,
+			"aoColumns": [
+				{ "mData": "school.schoolName" },
+				{ "mData": "latestY3" },
+				{ "mData": "latestY5" },
+				{ "mData": "latestY7" },
+				{ "mData": "latestY9" },
+				{ "mData": "rawGainY3Y5" },
+				{ "mData": "factoredGainY3Y5" },
+				{ "mData": "glgY3Y5" },
+				{ "mData": "latestGainInGainY3Y5" }
+			],
+		});
+	});
+	
 });
 </script>
 </head>
 <body>
 <div class="container">
+<div class="row">
+	<div class="col-*-*">
+		 <form action="" role="form">
+  			<div class="form-group">
+			    <label for="subject">Subject</label>
+			    <select id="subject">
+			    	<option value="all">All Subjects</option>
+			    	<option value="numeracy">Numeracy</option>
+			    	<option value="rading">Reading</option>
+			    	<option value="spelling">Spelling</option>
+			    </select>
+			 </div>
+		</form>
+	</div>
+</div>
 <div class="row">
 	<div class="col-*-*">
 		<table id="table" class="display" cellspacing="0">
@@ -71,16 +119,7 @@ $(document).ready(function() {
 		</table>
 	</div>
 </div>
-<div class="row">
-	<div class="col-*-*">
-		 <form role="form">
-  			<div class="form-group">
-			    <label for="subject">Subject</label>
-			    <input type="email" class="form-control" id="subject">
-			 </div>
-		</form>
-	</div>
-</div>
+
 </div>
 </body>
 </html>

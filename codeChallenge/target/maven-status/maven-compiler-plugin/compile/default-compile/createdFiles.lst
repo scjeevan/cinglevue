@@ -1,0 +1,5 @@
+com\zm\model\School.class
+com\zm\controller\MongoController.class
+com\zm\config\SpringMongoConfig.class
+com\zm\repositories\SchoolRepository.class
+com\zm\model\SchoolDetails.class
